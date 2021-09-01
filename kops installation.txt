@@ -13,17 +13,16 @@ Setup Kubernetes (K8s) Cluster on AWS Using KOPS
 
  sudo apt update -y
  sudo apt install unzip wget -y
- sudo curl https://s3.amazonaws.com/aws-cli/awscli-bundle.zip -o awscli-bundle.zip
  sudo apt install unzip python -y
- sudo unzip awscli-bundle.zip
- sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
- 
+ sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+ sudo unzip awscliv2.zip
+ sudo ./aws/install -i /usr/local/aws -b /usr/local/bin/aws
  
 #3) Install kops on ubuntu instance:
 
  	#Install wget if not installed
  	sudo apt install wget -y
- 	sudo wget https://github.com/kubernetes/kops/releases/download/v1.16.1/kops-linux-amd64
+ 	sudo wget https://github.com/kubernetes/kops/releases/download/v1.20.1/kops-linux-amd64
  	sudo chmod +x kops-linux-amd64
  	sudo mv kops-linux-amd64 /usr/local/bin/kops
  
@@ -32,8 +31,7 @@ Setup Kubernetes (K8s) Cluster on AWS Using KOPS
  sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
  sudo chmod +x ./kubectl
  sudo mv ./kubectl /usr/local/bin/kubectl
- aws s3 mb s3://nubonglegah.k8.local
- aws s3 ls
+
 
 5) Create an IAM role from Consloe or CLI with below Policies.
 
@@ -50,21 +48,20 @@ You Created. --> Save.
 
 6) create an S3 bucket Execute below commond in KOPS Server use unique bucket name if you get bucket name exists error.
 
-	aws s3 mb s3://nubonglegah.k8.local
+	aws s3 mb s3://class24ta.local 
 	aws s3 ls
 	
-    ex:
-	# S3 bucket name should be unique across AWS
-	aws s3 mb s3://simonlegah.k8s.local    s3://nubong.k8s.local
+    
+	#Note:  S3 bucket name should be unique across AWS
+	   
      
-	Expose environment variable:
-
-    # Add env variables in bashrc
+#Expose environment variable:
+# Add env variables in bashrc
     vi .bashrc
 	
-	# Give Unique Name And S3 Bucket which you created.
-	export NAME=s3://legah2045.k8.local
-	export KOPS_STATE_STORE=s3://legah2045.k8.local
+	          # Give Unique Name And S3 Bucket which you created.
+	export NAME=s3://terese.k8.local
+	export KOPS_STATE_STORE=s3://class24ta.local
  
     source .bashrc
 	
@@ -75,11 +72,11 @@ You Created. --> Save.
 
 8)Create kubernetes cluster definitions on S3 bucket
 
-	kops create cluster --zones us-east-2c --networking weave --master-size t2.medium --master-count 1 --node-size t2.large --node-count=2 ${NAME}
+	kops create cluster --zones ca-central-1c --networking weave --master-size t2.medium --master-count 1 --node-size t2.medium --node-count=2 ${NAME}
 	
 	kops create cluster --zones us-east-1e,zones us-east-2c --networking weave --master-size t2.medium --master-count 2 --node-size t2.micro --node-count=2 ${NAME}
 
-	kops create secret --name ${NAME} sshpublickey admin -i ~/.ssh/id_rsa.pub
+ 8b) kops create secret --name ${NAME} sshpublickey admin -i ~/.ssh/id_rsa.pub
 
 9) Create kubernetes cluser
 
