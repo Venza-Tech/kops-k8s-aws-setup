@@ -20,7 +20,7 @@ Setup Kubernetes (K8s) Cluster on AWS Using KOPS
  ls -l /usr/local/bin/aws
  sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
  aws --version
- 
+
 #3) Install kops on ubuntu instance:
 
  	#Install wget if not installed
@@ -63,7 +63,7 @@ You Created. --> Save.
     vi .bashrc
 	
 	          # Give Unique Name And S3 Bucket which you created.
-	export NAME=s3://terese.k8s.local
+	export NAME=class24.k8s.local
 	export KOPS_STATE_STORE=s3://class24ta.local
  
     source .bashrc
